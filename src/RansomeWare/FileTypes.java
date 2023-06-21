@@ -29,7 +29,8 @@ public class FileTypes {
 
     public void addFiles() {
         //Documents
-        AllowedTypes.add(".ASC");
+        AllowedTypes.add(".ENC");
+        /*
         AllowedTypes.add(".CSS");
         AllowedTypes.add(".CSV");
         AllowedTypes.add(".DOC");
@@ -136,7 +137,7 @@ public class FileTypes {
         AllowedTypes.add(".MOV");
         AllowedTypes.add(".MPG");
         AllowedTypes.add(".FCP");
-        AllowedTypes.add(".IMOVIEPROJ");
+        AllowedTypes.add(".IMOVIEPROJ");*/
 
 
 

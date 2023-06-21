@@ -23,17 +23,14 @@ package RansomeWare;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 import static java.util.concurrent.TimeUnit.*;
 
 public class Scheduler {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    ScheduledFuture<?> handler;
+    private ScheduledFuture<?> handler;
     private int count;
     FileScore fs;
 
@@ -50,11 +47,10 @@ public class Scheduler {
                 if (count == 2) {
                     handler.cancel(true);
                     scheduler.shutdown();
-
                 }
 
                 try {
-                    newLastMod();
+                    newLastMod(Const.ROOT_DIR);
                     count++;
                 } catch(Exception e) {}
             }
@@ -66,14 +62,12 @@ public class Scheduler {
         handler = scheduler.scheduleAtFixedRate(test, 10,10,SECONDS);
         scheduler.awaitTermination(60, SECONDS);
         FileScore fs = new FileScore();
-        fs.FileScore();
-
-
+        fs.FileScore(Const.ROOT_DIR);
     }
 
-    public void newLastMod() throws Exception {
-        File in = new File(System.getProperty("user.home") + File.separator + "output.txt");
-        File out = new File(System.getProperty("user.home") + File.separator + "newOutput.txt");
+    public void newLastMod(String root) throws Exception {
+        File in = new File(root + File.separator + "output.txt");
+        File out = new File(root + File.separator + "newOutput.txt");
         try(
                 BufferedReader br = new BufferedReader(new FileReader(in));
                 BufferedWriter bw = new BufferedWriter(new FileWriter(out))
@@ -83,7 +77,7 @@ public class Scheduler {
             while((line = br.readLine()) != null) {
                 String[] nameLastMod = line.split(",");
                 File f = new File(nameLastMod[0]);
-                double beta = fs.calculateBeta(f);
+                double beta = JwareUtils.calculateBeta(f);
                 bw.write(line + ", " + beta);
                 bw.newLine();
             }

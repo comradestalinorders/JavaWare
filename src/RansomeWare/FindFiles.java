@@ -33,16 +33,19 @@ public class FindFiles {
     List<String> avoidDir;
 
     FileScore fs;
+    private static final boolean TEST = false;
 
-
-    public void FindFiles() throws Exception {
+    public  void FindFiles(String path) throws Exception {
         fs = new FileScore();
         //Use System Property rather than C:\\ to make it OS independent
 
-        String home = System.getProperty("user.home");
+        String home = path;// System.getProperty("user.home");
+
+        System.out.println(new File(home).getAbsolutePath());
+        if(TEST ) return;
 
         //Creating a file to write the files found into
-        Writer writer = new FileWriter(System.getProperty("user.home") + File.separator + "output.txt", false);
+        Writer writer = new FileWriter(home + File.separator + "output.txt", false);
         fileWriter = new BufferedWriter(writer);
 
         //List of allowed files
@@ -54,9 +57,12 @@ public class FindFiles {
         fileWriter.close();
 
         //launch scheduler
-        Scheduler s = new Scheduler();
-        s.function();
+         Scheduler s = new Scheduler();
+         s.function();
     }
+     /*public void FindFiles() throws Exception {
+        this.FindFiles(System.getProperty("user.home"));
+    }*/
 
     public void traverse(String path) throws Exception {
         File root = new File(path);
@@ -77,7 +83,7 @@ public class FindFiles {
 
                 //if file extension is allowed, write to file with last mod
                 if(allowedFiles.contains("." + fileType.toUpperCase())) {
-                    double beta = fs.calculateBeta(f);
+                    double beta = JwareUtils.calculateBeta(f);
                     fileWriter.write(f.getAbsolutePath() + ", " + beta);
                     fileWriter.newLine();
                 }
